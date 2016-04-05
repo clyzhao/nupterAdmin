@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <meta charset="utf-8">
+</head>
+<body>
+  <nav style="text-align: center;">
+    <ul class="pagination">
+      <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+      <?php 
+      if($page_num<5){
+      for($i=1; $i<=$page_num; $i++){
+      echo "<li><a href='#' class=pages>".$i."</a></li>";
+    }
+  }else{
+  for($i=1; $i<=5; $i++){
+  echo "<li><a href='#' class=pages>".$i."</a></li>";
+}
+}
+?>
+<li><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+</ul>
+</nav>
+</body>
+</html>

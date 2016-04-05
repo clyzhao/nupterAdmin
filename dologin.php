@@ -11,7 +11,7 @@ if($account&&$passwd){
     if ($passwd==$result["passwd"]) {
       session_start();
       $_SESSION["name"]=$result["nickName"];
-      echo "<script>window.location='index.php';</script>";
+      echo "<script>window.location='editArticle.php';</script>";
     }else{
       echo "<script>alert('密码错误');</script>";
     }

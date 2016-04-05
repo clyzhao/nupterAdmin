@@ -18,11 +18,21 @@ if($arr['initial_url']==""){
 }else{
   $arr['ifReprint']="yse";
 }
-//print_r($arr);
 
 if($_GET['isUpdate']==0){
   if(insert("reading", $arr)){
-    alertMes("添加成功", "articles.php");
+    alertMes("添加成功", "getArticleList.php");
+  }else{
+    alertMes("服务器错误，请重试", "editArticle.php");
+  }
+}else{
+  $where="id=$id";
+  if(delete("reading", $where)){
+    if(insert("reading", $arr)){
+      alertMes("更新成功", "getArticleList.php");
+    }
+  }else{
+    alertMes("服务器错误，请重试", "editArticle.php?id=$id");
   }
 }
 

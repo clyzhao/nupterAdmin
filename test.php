@@ -1,15 +1,17 @@
 <?php
 header("Content-type:text/html;charset=utf-8");
-$isUpdate=1;
+include 'conn.php';
+
 ?>
 <!DOCTYPE html>
 <html>
 <head>
   <title></title>
+  <meta charset="utf-8">
 </head>
 <body>
-<form action="ddArticle.php?isUpdate=<?php echo $isUpdate;?>&id=<?php if($isUpdate) echo 1;?>" method="POST">
-  <input type="submit"></input>
+<a><form action="getReadingList.php"><input type="submit" name="current_page" value="1"></input></form></a>
 </form>
 </body>
 </html>
+

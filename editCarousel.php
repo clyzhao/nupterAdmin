@@ -13,7 +13,7 @@ $isUpdate=0;
 if(!$_GET){
 }else{
   $id=$_GET["id"];
-  $sql="select * from reading where id=$id limit 1";
+  $sql="select * from carousels where id=$id limit 1";
   if($res=mysql_query($sql)){
     $info=mysql_fetch_assoc($res);       
   }
@@ -84,8 +84,8 @@ if(!$_GET){
   }
   #img-container img{
     display: none;
-    height: 200px;
-    width: 150px;
+    height: 150px;
+    width: 200px;
     border: 1px solid #ccc;
     margin: 20px 10px;
   }
@@ -98,13 +98,13 @@ if(!$_GET){
     <a href="editArticle.php"><h2>掌上南邮4.0</h2></a>
     <nav>
       <ul class="nav nav-pills nav-stacked" id="side-bar-tab">
-        <li role="presentation" class="active">
+        <li role="presentation">
           <a href="editArticle.php">编辑文章</a>
         </li>
         <li role="presentation">
           <a href="getArticleList.php">文章列表</a>
         </li>
-        <li role="presentation">
+        <li role="presentation" class="active">
           <a href="editCarousel.php">编辑轮播</a>
         </li>
         <li role="presentation">
@@ -129,63 +129,55 @@ if(!$_GET){
     <div class="container">
       <div class="row" id="content">
         <div class="col-md-7 col-lg-6 col-md-offset-2">
-          <p style="margin-top: 10px;">转载文章请直接到表单底部添加链接提交</p>
-          <p style="margin-bottom: 20px;">特色图片说明：特色图片可选择添加，最多添加3张，用于在APP端显示文章列表时附加显示，不显示在文章中，原创及转载文章都可添加特色图片。文章中的图片请在编辑文章内容时添加。</p>
-          <form action="addArticle.php?isUpdate=<?php echo $isUpdate;?>&id=<?php if($isUpdate) echo $info['id'];?>" onsubmit="return checkForm();" method="POST">
+          <p style="margin-top: 10px; margin-bottom: 20px;">转载请直接到表单底部添加链接提交</p>
+          <form action="addCarousel.php?isUpdate=<?php echo $isUpdate;?>&id=<?php if($isUpdate) echo $info['id'];?>" onsubmit="return checkForm();" method="POST">
             <div class="form-group">
-              <label for="title">文章标题</label>
+              <label for="title">标题</label>
               <input type="text" class="form-control" id="title" name="title" value="<?php if($isUpdate) echo $info['title'];?>">
             </div>
             <div class="form-group">
-              <label for="author">文章作者</label>
+              <label for="author">作者</label>
               <input type="text" class="form-control" id="author" name="author" value="<?php echo $_SESSION["name"]; ?>" value="<?php if($isUpdate) echo $info['author'];?>">
             </div>
             <div class="form-group">
-              <label for="tag">文章标签</label>
+              <label for="tag">标签</label>
               <input type="text" class="form-control" id="tag" name="tag" value="<?php if($isUpdate) echo $info['tag'];?>">
             </div>
             <div class="form-group">
-              <label for="content">文章内容</label>
+              <label for="content">内容</label>
               <div id="article_content">
                 <script id="editor" type="text/plain" style="width:70%;height:600px;"></script>
               </div>
             </div>
             <div class="form-group">
-              <label for="img" style="display: block;">特色图片</label>
-              <p>特色图片用于在APP端显示文章列表时附加显示，可与文章中的图片不同。文章中的图片请在编辑文章内容时添加。</p>
+              <label for="img" style="display: block;">轮播图</label>
               <div id="up_file">
                 <a class="btn btn-success" id="pickfiles" href="#">
                     <i class="glyphicon glyphicon-plus"></i>
-                    <span>添加特色图片</span>
+                    <span>添加轮播图</span>
                 </a>
                 <input type="text" name="img_url1" style="display:none" id="img_url1" value="<?php if($isUpdate) echo $info['img_url1'];?>">
-                <input type="text" name="img_url2" style="display:none" id="img_url2" value="<?php if($isUpdate) echo $info['img_url2'];?>">
-                <input type="text" name="img_url3" style="display:none" id="img_url3" value="<?php if($isUpdate) echo $info['img_url3'];?>">
               </div>
               <div id="img-container">
                 <img id="img1" src="">
-                <img id="img2" src="">
-                <img id="img3" src="">
               </div>
               <?php
-                for($i=1; $i<=3; $i++){
-                  $img_url="img_url".$i;
+                  $img_url="img_url1";
                   if($info[$img_url]){
-                    echo "<script>$('#img".$i."').css('display','inline-block');</script>";
-                    echo "<script>$('#img".$i."').attr('src','".$info[$img_url]."');</script>";
+                    echo "<script>$('#img1').css('display','inline-block');</script>";
+                    echo "<script>$('#img1').attr('src','".$info[$img_url]."');</script>";
                   }
-                }
               ?>
             </div>
             <div class="form-group">
-              <label for="initial-url">转载文章请直接提交原文链接<span>（为了更好的用户体验，建议提交方便在移动设备上阅读的文章链接）</span></label>
+              <label for="initial-url">转载请直接提交原文链接<span>（为了更好的用户体验，建议提交方便在移动设备上阅读的文章链接）</span></label>
               <input type="text" class="form-control" id="initial-url" name="initial_url">
             </div>
             <div class="form-group">
               <label for="additonal" style="display: block;">附加选项</label>
               <input type="checkbox" name="push" value="on"> 推送
             </div>
-            <button type="submit" class="btn btn-success" style="float: right; margin-top: 30px;">提交文章</button>
+            <button type="submit" class="btn btn-success" style="float: right; margin-top: 30px;">提交</button>
           </form> 
         </div>
       </div>
@@ -241,7 +233,7 @@ if(!$_GET){
 
         },
         'FileUploaded': function (up, file, info) {
-          if(index<=3){
+          if(index<=1){
             var res = JSON.parse(info);
             var sourceLink = "http://7xnxx0.com1.z0.glb.clouddn.com/" + res.key; // 获取上传成功后的文件的Url
             var imgId="#img"+index;
@@ -277,12 +269,17 @@ if(!$_GET){
     var tag=$("#tag").val();
     var editorValue=ueditor.getContent();
     var initial_url=$("#initial-url").val();
+    var img1=$("#img1").attr("src");
     if(!title && !author && !tag && !editorValue && !initial_url){
       alert("请填写后提交。");
     }
+    if(!img1){
+      alert("请添加轮播图");
+      return false;
+    }
     if(!initial_url){
       if(!title){
-        failedMes($("#title"),"文章标题");
+        failedMes($("#title"),"标题");
         return false;
       }
       if(!author){
@@ -290,7 +287,7 @@ if(!$_GET){
         return false;
       }
       if(!tag){
-        failedMes($("#tag"),"文章标签");
+        failedMes($("#tag"),"标签");
         return false;
       }
       if(!editorValue){
