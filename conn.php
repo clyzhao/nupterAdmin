@@ -11,7 +11,8 @@
 // }
 
 header("Content_type:text/html;character=utf-8");
-$conn = @mysql_connect("127.0.0.1", "root", "960926");
+date_default_timezone_set("PRC");
+$conn = @mysql_connect("localhost", "root", "960926");
 if (!$conn) {
     die(" 连接数据失败" . mysql_error());
 } else {

@@ -86,6 +86,11 @@ $total_page_num=((int)($article_num/$every_page_article_num))+1;
     height: 34px; 
     opacity: 0;
   }
+  .author-img{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+  }
   </style>
 </head>
 <body>
@@ -118,7 +123,8 @@ $total_page_num=((int)($article_num/$every_page_article_num))+1;
     <header class="header">
       <div class="header-content">
         <span>欢迎您，</span>
-        <span><?php echo $_SESSION["name"];?></span>
+         <span style="margin-right: 8px;"><?php echo $_SESSION['name'];?></span>
+         <img class="author-img" src="<?php echo $_SESSION['author_img'];?>">
       </div>
       <div style="clear: both;"></div>
     </header>

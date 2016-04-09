@@ -3,10 +3,11 @@ header("Content-type:text/html;charset=utf-8");
 include 'conn.php';
 
 session_start();
-if(!$_SESSION["name"]){
+if(!$_SESSION["name"] || !$_SESSION["author_img"]){
   header("Location:login.html");
 }else{
-  $userName=$_SESSION['name'];
+  // $userName=$_SESSION['name'];
+  // $author_img=$_SESSION["author_img"];
 }
 
 $isUpdate=0;
@@ -85,9 +86,14 @@ if(!$_GET){
   #img-container img{
     display: none;
     height: 200px;
-    width: 150px;
+    /*width: 150px;*/
     border: 1px solid #ccc;
     margin: 20px 10px;
+  }
+  .author-img{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
   }
   </style>
 </head>
@@ -121,7 +127,8 @@ if(!$_GET){
     <header class="header">
       <div class="header-content">
         <span>欢迎您，</span>
-        <span><?php echo $_SESSION['name'];?></span>
+         <span style="margin-right: 8px;"><?php echo $_SESSION['name'];?></span>
+         <img class="author-img" src="<?php echo $_SESSION['author_img'];?>">
       </div>
       <div style="clear: both;"></div>
     </header>
@@ -138,11 +145,19 @@ if(!$_GET){
             </div>
             <div class="form-group">
               <label for="author">文章作者</label>
-              <input type="text" class="form-control" id="author" name="author" value="<?php echo $_SESSION["name"]; ?>" value="<?php if($isUpdate) echo $info['author'];?>">
+              <input type="text" class="form-control" id="author" name="author" value="<?php if($isUpdate){echo $info['author'];}else{echo $_SESSION['name'];}?>">
+            </div>
+            <div class="form-group" style="display: none;">
+              <label for="author-img">作者头像</label>
+              <input type="text" class="form-control" id="author-img" name="author_img" value="<?php echo $_SESSION['author_img']; ?>">
             </div>
             <div class="form-group">
               <label for="tag">文章标签</label>
               <input type="text" class="form-control" id="tag" name="tag" value="<?php if($isUpdate) echo $info['tag'];?>">
+            </div>
+            <div class="form-group">
+              <label for="des">文章描述</label>
+              <input type="text" class="form-control" id="des" name="des" value="<?php if($isUpdate) echo $info['des'];?>">
             </div>
             <div class="form-group">
               <label for="content">文章内容</label>
@@ -168,22 +183,24 @@ if(!$_GET){
                 <img id="img3" src="">
               </div>
               <?php
-                for($i=1; $i<=3; $i++){
-                  $img_url="img_url".$i;
-                  if($info[$img_url]){
-                    echo "<script>$('#img".$i."').css('display','inline-block');</script>";
-                    echo "<script>$('#img".$i."').attr('src','".$info[$img_url]."');</script>";
+                if($isUpdate){
+                  for($i=1; $i<=3; $i++){
+                    $img_url="img_url".$i;
+                    if($info[$img_url]){
+                      echo "<script>$('#img".$i."').css('display','inline-block');</script>";
+                      echo "<script>$('#img".$i."').attr('src','".$info[$img_url]."');</script>";
+                    }
                   }
                 }
               ?>
             </div>
             <div class="form-group">
               <label for="initial-url">转载文章请直接提交原文链接<span>（为了更好的用户体验，建议提交方便在移动设备上阅读的文章链接）</span></label>
-              <input type="text" class="form-control" id="initial-url" name="initial_url">
+              <input type="text" class="form-control" id="initial-url" name="initial_url" value="<?php if($isUpdate) echo $info['initial_url'];?>">
             </div>
             <div class="form-group">
               <label for="additonal" style="display: block;">附加选项</label>
-              <input type="checkbox" name="push" value="on"> 推送
+              <input type="checkbox" name="isPush" value="on"> 推送
             </div>
             <button type="submit" class="btn btn-success" style="float: right; margin-top: 30px;">提交文章</button>
           </form> 
@@ -275,12 +292,9 @@ if(!$_GET){
     var title=$("#title").val();
     var author=$("#author").val();
     var tag=$("#tag").val();
+    var des=$("#des").val();
     var editorValue=ueditor.getContent();
     var initial_url=$("#initial-url").val();
-    if(!title && !author && !tag && !editorValue && !initial_url){
-      alert("请填写后提交。");
-    }
-    if(!initial_url){
       if(!title){
         failedMes($("#title"),"文章标题");
         return false;
@@ -293,11 +307,14 @@ if(!$_GET){
         failedMes($("#tag"),"文章标签");
         return false;
       }
-      if(!editorValue){
-        alert("请填写文章内容");
+      if(!des){
+        failedMes($("#des"),"文章描述");
         return false;
       }
-    }
+      if(!editorValue && !initial_url){
+        alert("请填写文章内容或原文链接");
+        return false;
+      }
   }
 
   function failedMes(input,message){

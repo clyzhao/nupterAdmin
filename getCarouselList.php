@@ -3,9 +3,8 @@ header("Content-type:text/html;charset=utf-8");
 include 'conn.php';
 
 $every_page_carousel_num=10;
-$request=$_REQUEST['current_page'];
-if($request){
-  $current_page=$request;
+if(array_key_exists("current_page", $_REQUEST)){
+  $current_page=$_REQUEST["current_page"];
 }else{
   $current_page=1;
 }

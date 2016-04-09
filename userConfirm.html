@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>登录验证</title>
+  <style type="text/css">
+  html{
+    height: 100%;
+  }
+  body{
+    background: #fff;
+    height: 100%;
+    display: flex;
+    margin: 8px;
+    font-family: "Microsoft Yahei";
+  }
+  *{
+    margin:0;
+    padding: 0;
+  }
+  .container{
+    width: 50%;
+    height: 300px;
+    margin: auto;
+  }
+  .photo-con{
+    float: left;
+    width: 25%;
+    margin-top: 0px;
+  }
+  .photo{
+    width: 100%;
+  }
+  .question-con{
+    /*width: 75%;*/
+    float: left;
+  }
+  .text{
+    font-size: 1.5em;
+    margin-top: 30px;
+    margin-left: 1.6em;
+  }
+  .question{
+    font-size: 1.2em;
+    margin-left: 2em;
+    margin-top: 30px;
+  }
+  .radio-con{
+    margin-top: 30px;
+    margin-left: 2em;
+  }
+  .radio-con input{
+    margin: 0 0.6em;
+  }
+  .btn-success{
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+  }
+  .btn{
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    display: block;
+    margin-top: 30px;
+    width: 200px;
+    right: 10px;
+  }
+  @media (max-width: 767px){
+  .container{
+    width: 100%;
+  }
+  }
+  @media (max-width: 321px){
+    .question-con{
+      width: 75%;
+    }
+  }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="photo-con">
+    <img class="photo" src="img/photo.png">
+  </div>
+  <div class="question-con">
+    <p class="text">南邮小问答？</p>
+    <p class="question">南邮早上几点上第一节课</p>
+    <div class="radio-con">
+      <form action="userConfirm.php" method="POST">
+      <input type="radio" name="clock" value="sevenThirty">7:30</input>
+      <input type="radio" name="clock" value="eight">8:00</input>
+      <input type="radio" name="clock" value="eightThirty">8:30</input>
+      <button type="submit" class="btn btn-success">提交</button>
+      </form>
+    </div>
+  </div>
+  <div style="clear: both;"></div>
+</div>
+</body>
+</html>

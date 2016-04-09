@@ -3,7 +3,7 @@ header("Content-type:text/html;charset=utf-8");
 include 'conn.php';
 
 session_start();
-if(!$_SESSION["name"]){
+if(!$_SESSION["name"] || !$_SESSION["author_img"]){
   header("Location:login.html");
 }else{
   $userName=$_SESSION['name'];
@@ -85,9 +85,13 @@ if(!$_GET){
   #img-container img{
     display: none;
     height: 150px;
-    width: 200px;
     border: 1px solid #ccc;
     margin: 20px 10px;
+  }
+  .author-img{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
   }
   </style>
 </head>
@@ -121,7 +125,8 @@ if(!$_GET){
     <header class="header">
       <div class="header-content">
         <span>欢迎您，</span>
-        <span><?php echo $_SESSION['name'];?></span>
+         <span style="margin-right: 8px;"><?php echo $_SESSION['name'];?></span>
+         <img class="author-img" src="<?php echo $_SESSION['author_img'];?>">
       </div>
       <div style="clear: both;"></div>
     </header>
@@ -137,11 +142,19 @@ if(!$_GET){
             </div>
             <div class="form-group">
               <label for="author">作者</label>
-              <input type="text" class="form-control" id="author" name="author" value="<?php echo $_SESSION["name"]; ?>" value="<?php if($isUpdate) echo $info['author'];?>">
+              <input type="text" class="form-control" id="author" name="author" value="<?php if($isUpdate){echo $info['author'];}else{echo $_SESSION['name'];} ?>">
+            </div>
+            <div class="form-group" style="display: none;">
+              <label for="author-img">作者头像</label>
+              <input type="text" class="form-control" id="author-img" name="author_img" value="<?php echo $_SESSION['author_img']; ?>">
             </div>
             <div class="form-group">
               <label for="tag">标签</label>
               <input type="text" class="form-control" id="tag" name="tag" value="<?php if($isUpdate) echo $info['tag'];?>">
+            </div>
+            <div class="form-group">
+              <label for="des">描述</label>
+              <input type="text" class="form-control" id="des" name="des" value="<?php if($isUpdate) echo $info['des'];?>">
             </div>
             <div class="form-group">
               <label for="content">内容</label>
@@ -162,20 +175,22 @@ if(!$_GET){
                 <img id="img1" src="">
               </div>
               <?php
+                if($isUpdate){
                   $img_url="img_url1";
                   if($info[$img_url]){
                     echo "<script>$('#img1').css('display','inline-block');</script>";
                     echo "<script>$('#img1').attr('src','".$info[$img_url]."');</script>";
                   }
+                } 
               ?>
             </div>
             <div class="form-group">
               <label for="initial-url">转载请直接提交原文链接<span>（为了更好的用户体验，建议提交方便在移动设备上阅读的文章链接）</span></label>
-              <input type="text" class="form-control" id="initial-url" name="initial_url">
+              <input type="text" class="form-control" id="initial-url" name="initial_url" value="<?php if($isUpdate) echo $info['initial_url'];?>">
             </div>
             <div class="form-group">
               <label for="additonal" style="display: block;">附加选项</label>
-              <input type="checkbox" name="push" value="on"> 推送
+              <input type="checkbox" name="isPush" value="on"> 推送
             </div>
             <button type="submit" class="btn btn-success" style="float: right; margin-top: 30px;">提交</button>
           </form> 
@@ -267,17 +282,10 @@ if(!$_GET){
     var title=$("#title").val();
     var author=$("#author").val();
     var tag=$("#tag").val();
+    var des=$("#des").val();
     var editorValue=ueditor.getContent();
     var initial_url=$("#initial-url").val();
     var img1=$("#img1").attr("src");
-    if(!title && !author && !tag && !editorValue && !initial_url){
-      alert("请填写后提交。");
-    }
-    if(!img1){
-      alert("请添加轮播图");
-      return false;
-    }
-    if(!initial_url){
       if(!title){
         failedMes($("#title"),"标题");
         return false;
@@ -290,11 +298,18 @@ if(!$_GET){
         failedMes($("#tag"),"标签");
         return false;
       }
-      if(!editorValue){
-        alert("请填写文章内容");
+      if(!des){
+        failedMes($("#des"),"描述");
         return false;
       }
-    }
+      if(!editorValue && !initial_url){
+        alert("请填写文章内容或原文链接");
+        return false;
+      }
+      if(!img1){
+        alert("请添加轮播图");
+        return false;
+      }
   }
 
   function failedMes(input,message){

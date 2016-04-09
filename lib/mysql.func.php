@@ -32,6 +32,13 @@ function delete($table,$where=null){
   return mysql_affected_rows();
 }
 
+//得到一条记录
+function fetchOne($sql,$result_type=MYSQL_ASSOC){
+  $result=mysql_query($sql);
+  $row=mysql_fetch_array($result,$result_type);
+  return $row;
+}
+
 //得到结果集中所有记录
 function fetchAll($sql,$result_type=MYSQL_ASSOC){
   $result=mysql_query($sql);

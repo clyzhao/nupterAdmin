@@ -11,6 +11,7 @@ if($account&&$passwd){
     if ($passwd==$result["passwd"]) {
       session_start();
       $_SESSION["name"]=$result["nickName"];
+      $_SESSION["author_img"]=$result["img_url"];
       echo "<script>window.location='editArticle.php';</script>";
     }else{
       echo "<script>alert('密码错误');</script>";
@@ -21,4 +22,4 @@ if($account&&$passwd){
 }else{
   echo "<script>alert('服务器没有得到数据，请重试');</script>"; 
 }
-echo "<script>window.location='login.php';</script>";
+echo "<script>window.location='login.html';</script>";
